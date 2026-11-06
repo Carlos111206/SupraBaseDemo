@@ -68,6 +68,16 @@ if __name__ == "__main__":
     contactos = ModelContactos()
     print(contactos.obtenerContactos())
 
+    contactos = contactos.obtenerContactos()
+
+    #Almacena los datos los requisitos recibidos en Supabase 
+    datos  = contactos.obetnerContactos
+
+    print(datos)
+
+    #Envia contactos.html los datos supabase
+
+
     resultado = contactos.actuzalizarContacto(
         "Edder",
         "Nuevo@gmail.com",
