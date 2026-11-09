@@ -2,6 +2,9 @@ import web
 from mvc.controllers.index import Index
 from mvc.controllers.contactos import Contactos
 from mvc.controllers.insertar_contacto import InsertarContactos
+from mvc.controllers.ver_contacto import VerContacto
+from mvc.controllers.borrar_contacto import BorrarContacto
+from mvc.controllers.actualizar_contacto import ActualizarContacto
 
 
 urls = (
@@ -9,6 +12,9 @@ urls = (
     '/contactos', 'Contactos',
     '/insertar_contacto', 'InsertarContactos',
     '/insertar-contactos', 'InsertarContactos',
+    '/ver_contacto', 'VerContacto',
+    '/borrar_contacto', 'BorrarContacto',
+    '/actualizar_contacto', 'ActualizarContacto',
 )
 
 
