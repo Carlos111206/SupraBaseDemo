@@ -1,8 +1,9 @@
 import os
+import web
 from supabase import create_client, Client
 from dotenv import load_dotenv
-
 load_dotenv()
+render = web.template.render('mvc/views',base = 'template')
 
 
 class ModelContactos:
@@ -63,7 +64,15 @@ class ModelContactos:
             print (f"ERROR 101:{error}")
             return None
 
-            
+class Contactos:
+
+    def GET(self):
+        contactos = ModelContactos()
+        datos = contactos.obtenerContactos()
+
+        return render.contactos(datos)
+    
+
 if __name__ == "__main__":
     contactos = ModelContactos()
     print(contactos.obtenerContactos())
