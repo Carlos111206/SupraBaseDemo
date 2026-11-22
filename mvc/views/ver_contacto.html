@@ -1,20 +1,26 @@
 $def with(contacto)
 
-$if contacto !=[]
+$if contacto:
     <h1>Ver contacto</h1>
-<form name="contacto" method="GET" action="/contactos">
-    <label for="nombre">Nombre</label>
-    <input type="text" name="nombre" id="nombre" value="$contacto['nombre']" readonly><br>
 
-    <label for="email">Email</label>
-    <input type="email" name="email" id="email" value="$contacto['email']" readonly><br>
+    <form name="contacto" method="GET" action="/contactos">
 
-    <label for="telefono">Telefono</label>
-    <input type="tel" name="telefono" id="telefono" value="$contacto['telefono']" readonly><br>
+        <label for="nombre">Nombre</label>
+        <input type="text" name="nombre" id="nombre" value="$contacto['nombre']" readonly>
+        <br>
 
-    <button type="summit" name="regresar" id="regresar">regresar</button>
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" value="$contacto['email']" readonly>
+        <br>
+
+        <label for="telefono">Telefono</label>
+        <input type="tel" name="telefono" id="telefono" value="$contacto['telefono']" readonly>
+        <br>
+
+        <button type="submit" name="regresar" id="regresar">Regresar</button>
+
+    </form>
 
 $else:
     <h1>Contacto no encontrado</h1>
     <a href="/contactos">Regresar</a>
-</form>

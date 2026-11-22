@@ -78,12 +78,16 @@ class ModelContactos:
             id = self.validar_hash(id_contacto)
             # SELECT * FROM contactos WHERE id_contacto = ?;
             response = self.supabase.table("contactos").select("*").eq("id_contacto",id).execute()
-            return response.data
+
+            if response.data:
+                return response.data[0]
+            else:
+                return None
         except Exception as error:
             logger.error("ERROR 102: %s", error)
-            print(f"ERROR 102: {str(error)}")
-            return []
-
+            print("ERROR 102: {str(error)}")
+            return None
+            
     def insertarContacto(self,nombre:str,email:str,telefono:str, imagen:str ):
         try:
             # INSERT INTO contactos(nombre,email,telefono,imagen) VALUES(?,?,?,?);

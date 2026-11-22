@@ -1,3 +1,4 @@
+import os 
 from supabase import create_client, Client
 from dotenv import load_dotenv
 import logging
@@ -23,10 +24,12 @@ class Authenuser:
     def iniciarSesion(self,email: str, password: str) -> dict[str,Any]|None:
         try:
             # Llamada a la función de autenticación de Supabase
-            response = self.supabase.auth.sign_in_with_password({
+            response = self.supabase.auth.sign_in_with_password(
+                {
                 "email": email,
                 "password": password
-            })
+                }
+            )
 
             # Verifica si la respuesta contiene un error
             if response.get("error"):
