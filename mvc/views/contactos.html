@@ -2,9 +2,10 @@ $def with(datos)
 <h1>Contactos</h1>
 <a href="/insertar_contacto">Insertar</a>
 
-<table>
+<table border="1">
     <thead>
         <tr>
+            <th>Foto</th>
             <th>ID</th>
             <th>Nombre</th>
             <th>Email</th>
@@ -17,6 +18,7 @@ $def with(datos)
     <tbody>
         $for contacto in datos:
         <tr>
+            <td><img src="/static/images/default.png" alt="Foto" width="100" height="100"></td>
             <td>$contacto["id_contacto"]</td>
             <td>$contacto["nombre"]</td>
             <td>$contacto["email"]</td>

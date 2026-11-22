@@ -64,6 +64,15 @@ class ModelContactos:
             print (f"ERROR 101:{error}")
             return None
 
+    def BuscarContacto(self, id_contacto:int):
+        try:
+            response = self.supabase.table("contactos").select("*").eq("id_contacto",id_contacto).execute()
+            return response.data
+
+        except Exception as error:
+            print (f"ERROR 101:{error}")
+            return None
+
 class Contactos:
 
     def GET(self):

@@ -9,11 +9,15 @@ class InsertarContactos:
         return render.insertar_contacto()
 
     def POST(self):
-        formulario = web.input()
+        formulario = web.input(image={})
 
         nombre = formulario.nombre
         email = formulario.email
         telefono = formulario.telefono
+        archivo = formulario['image']
+        image=archivo.filename.replace
+
+
 
         print(f"Nombre:{nombre}")
         print(f"Email:{email}")

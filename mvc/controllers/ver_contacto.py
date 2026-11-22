@@ -7,8 +7,11 @@ class   VerContacto:
 
     def GET(self):
         formulario = web.input()
+
         id_contacto = formulario.id_contacto
 
         contactos = ModelContactos()
+
         contacto = contactos.buscarContacto(id_contacto)
-        return render.ver_contacto() # type: ignore
+
+        return render.ver_contacto(contacto) # type: ignore

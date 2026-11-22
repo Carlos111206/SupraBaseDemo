@@ -9,6 +9,7 @@ class BorrarContacto:
         formulario = web.input()
 
         id_contacto = formulario.id_contacto
+        
         contactos = ModelContactos()
         contacto = contactos.buscarContacto(id_contacto)
 
