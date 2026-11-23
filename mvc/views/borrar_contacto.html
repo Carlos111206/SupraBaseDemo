@@ -1,6 +1,13 @@
 $def with (contacto)
 
+$ imagen = contacto.get('imagen') or 'default.png'
+
 <h1>Borrar contacto</h1>
+
+<form name="borrar" method="post">
+    <input type="hidden" name="id_contacto" value="$contacto['id_contacto']">
+
+    <img src="/static/images/$imagen" alt="Foto" width="100" height="100"><br>
 
     <label for="nombre">Nombre</label>
     <input type="text" name="nombre" id="nombre" value="$contacto['nombre']" readonly><br>
@@ -11,4 +18,7 @@ $def with (contacto)
     <label for="telefono">Telefono</label>
     <input type="tel" name="telefono" id="telefono" value="$contacto['telefono']" readonly><br>
 
-    <a href="/contactos">Regresar</a>
+    <p>¿Seguro que quieres borrar este contacto?</p>
+    <button type="submit">Sí, borrar</button>
+    <a href="/contactos">Cancelar</a>
+</form>

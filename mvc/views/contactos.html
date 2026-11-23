@@ -6,7 +6,6 @@ $def with(datos)
     <thead>
         <tr>
             <th>Foto</th>
-            <th>ID</th>
             <th>Nombre</th>
             <th>Email</th>
             <th>Telefono</th>
@@ -17,17 +16,17 @@ $def with(datos)
     </thead>
     <tbody>
         $for contacto in datos:
+            $ imagen = contacto.get('imagen') or 'default.png'
             <tr>
-                 <td>
-                    <img src="/static/images/default.png" alt="Foto" width="100" height="100">
+                <td>
+                    <img src="/static/images/$imagen" alt="Foto" width="100" height="100">
                 </td>
-                <td>$contacto["id_contacto"]</td>
                 <td>$contacto["nombre"]</td>
                 <td>$contacto["email"]</td>
                 <td>$contacto["telefono"]</td>
                 <td><a href="/ver_contacto?id_contacto=$contacto['id_contacto']">ver</a></td>
-                <td> <a href="/borrar_contacto?id_contacto=$contacto['id_contacto']">Borrar</a></td>
-                <td> <a href="/actualizar_contacto?id_contacto=$contacto['id_contacto']">Actualizar</a></td>
-        </tr>
+                <td><a href="/borrar_contacto?id_contacto=$contacto['id_contacto']">Borrar</a></td>
+                <td><a href="/actualizar_contacto?id_contacto=$contacto['id_contacto']">Actualizar</a></td>
+            </tr>
     </tbody>
 </table>

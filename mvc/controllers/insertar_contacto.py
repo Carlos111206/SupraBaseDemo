@@ -1,7 +1,9 @@
-import web 
-from mvc.controllers.contactos import ModelContactos
+import web
+from mvc.models.contactos import ModelContactos
+from mvc.controllers.imagenes import guardar_imagen
 
-render = web.template.render("mvc/views")
+render = web.template.render("mvc/views", base="template")
+
 
 class InsertarContactos:
 
@@ -14,19 +16,9 @@ class InsertarContactos:
         nombre = formulario.nombre
         email = formulario.email
         telefono = formulario.telefono
-        archivo = formulario['image']
-        image=archivo.filename.replace
-
-
-
-        print(f"Nombre:{nombre}")
-        print(f"Email:{email}")
-        print(f"Telefono:{telefono}")
+        imagen = guardar_imagen(formulario["image"]) or "default.png"
 
         contactos = ModelContactos()
-        contactos.insertarContacto(nombre, email, telefono)
+        contactos.insertarContacto(nombre, email, telefono, imagen)
 
         raise web.seeother('/contactos')
-
-
-

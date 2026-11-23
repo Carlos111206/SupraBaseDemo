@@ -1,17 +1,20 @@
-<form name="contactos" method="post" ectype="multipart/form-data">
+<h1>Insertar contacto</h1>
+
+<form name="contactos" method="post" enctype="multipart/form-data">
     <label for="nombre">Nombre</label>
-    <input type="text" name="nombre" id="nombre" required>
+    <input type="text" name="nombre" id="nombre" required><br>
 
     <label for="email">Email</label>
-    <input type="email" name="email" id="email" required>
+    <input type="email" name="email" id="email" required><br>
 
     <label for="telefono">Telefono</label>
-    <input type="tel" name="telefono" id="telefono" required>
+    <input type="tel" name="telefono" id="telefono" required><br>
 
     <label for="image">Foto del Perfil</label>
-    <input type="file" name="image" accept=".png" required><br>
+    <input type="file" name="image" id="image" accept=".png,.jpg,.jpeg"><br>
 
     <button type="submit" name="guardar" id="guardar">guardar</button>
     <button type="reset" name="limpiar" id="limpiar">limpiar</button>
-
 </form>
+
+<a href="/contactos">Regresar</a>
