@@ -1,15 +1,20 @@
-import web 
-from mvc.models.contactos import ModelContactos
+import logging
 
-render = web.template.render("mvc/views", base="template")
+import web
 
-class   VerContacto:
+from mvc.controllers.comun import cargar_contacto, render, requerir_login
 
-    def GET(self):
-        formulario = web.input()
-        id_contacto = formulario.id_contacto
+logger = logging.getLogger(__name__)
 
-        contactos = ModelContactos()
-        contacto = contactos.buscarContacto(id_contacto)
 
-        return render.ver_contacto(contacto) # type: ignore
+class VerContacto:
+
+    def GET(self) -> str:
+        requerir_login()
+        try:
+            formulario = web.input(id_contacto="")
+            contacto = cargar_contacto(formulario.id_contacto)
+        except Exception as error:
+            logger.error("ERROR 320: %s", error)
+            contacto = None
+        return render.ver_contacto(contacto)  # type: ignore

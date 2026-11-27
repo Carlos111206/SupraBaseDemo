@@ -1,50 +1,37 @@
-import os 
-from supabase import create_client, Client
-from dotenv import load_dotenv
 import logging
+import os
 
-#Lee las variables de entorno
+from dotenv import load_dotenv
+from supabase import Client, create_client
+
 load_dotenv()
 
-#Configura el sistema Logging
 logger = logging.getLogger(__name__)
 
+
 class Authenuser:
+    """Autenticación con Supabase Authentication (email y password)."""
 
     def __init__(self) -> None:
         try:
             self.supabase: Client = create_client(
-                os.environ.get("SUPABASE_URL" , ""),
-                os.environ.get("SUPABASE_KEY" , "")
+                os.environ.get("SUPABASE_URL", ""),
+                os.environ.get("SUPABASE_KEY", ""),
             )
         except Exception as error:
-            logger.error(f"ERROR 100: {str(error)}")
-            print(f"ERROR 100: {str(error)}")
+            logger.error("ERROR 100: %s", error)
+            raise
 
-    def iniciarSesion(self,email: str, password: str) -> dict[str,Any]|None:
+    def iniciar_sesion(self, email: str, password: str) -> str | None:
+        """Devuelve el token JWT de la sesión, o None si las credenciales son inválidas."""
         try:
-            # Llamada a la función de autenticación de Supabase
-            response = self.supabase.auth.sign_in_with_password(
-                {
-                "email": email,
-                "password": password
-                }
+            respuesta = self.supabase.auth.sign_in_with_password(
+                {"email": email, "password": password}
             )
-
-            # Verifica si la respuesta contiene un error
-            if response.get("error"):
-                logger.error(f"ERROR 101: {response['error']['message']}")
-                return None
-
-            # Devuelve el usuario autenticado
-            return response.get("data", {}).get("user")
-        except Exception as error:
-            logger.error(f"ERROR 102: {str(error)}")
-            print(f"ERROR 102: {str(error)}")
+            if respuesta.session and respuesta.session.access_token:
+                return respuesta.session.access_token
+            logger.error("ERROR 101: Supabase no devolvió sesión")
             return None
-
-if __name__ == "__main__":
-    print("Autenticación de usuarios con Supabase")
-    objeto = Authenuser()
-    print(objeto.iniciarSesion("dejah@thark.org", "password123"))
-    print(objeto.iniciarSesion("john@doe.com", "password456"))
+        except Exception as error:
+            logger.error("ERROR 102: %s", error)
+            return None

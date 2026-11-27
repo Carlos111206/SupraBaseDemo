@@ -1,24 +1,54 @@
+import logging
 import os
+import time
 import uuid
+from typing import Any
 
-CARPETA_IMAGENES = "static/images"
-EXTENSIONES_VALIDAS = (".png", ".jpg", ".jpeg")
+logger = logging.getLogger(__name__)
+
+CARPETA_FOTOS = "static/fotos"
+FOTO_POR_DEFECTO = "default.png"
+EXTENSIONES_VALIDAS = (".jpg", ".jpeg", ".png", ".webp")
+TAMANO_MAXIMO = 5 * 1024 * 1024  # 5 MB
 
 
-def guardar_imagen(archivo) -> str | None:
-    """Guarda la imagen subida en static/images y devuelve el nombre del archivo.
-    Si no se subió ninguna imagen (o no es válida) devuelve None."""
-    if not archivo or not getattr(archivo, "filename", ""):
+def guardar_foto(archivo: Any) -> str | None:
+    """Guarda la foto en static/fotos/ y devuelve su nombre.
+    None si no se eligió archivo. ValueError (con mensaje para el usuario) si no es válida."""
+    nombre_original = getattr(archivo, "filename", "") or ""
+    if not nombre_original:
         return None
 
-    extension = os.path.splitext(archivo.filename)[1].lower()
+    extension = os.path.splitext(nombre_original)[1].lower()
     if extension not in EXTENSIONES_VALIDAS:
-        return None
+        raise ValueError("Formato de imagen no permitido (use .jpg, .jpeg, .png o .webp)")
 
-    # Nombre único para que dos fotos no se sobreescriban
-    nombre_archivo = f"{uuid.uuid4().hex}{extension}"
-    os.makedirs(CARPETA_IMAGENES, exist_ok=True)
     archivo.file.seek(0)
-    with open(os.path.join(CARPETA_IMAGENES, nombre_archivo), "wb") as f:
-        f.write(archivo.file.read())
-    return nombre_archivo
+    contenido: bytes = archivo.file.read()
+    if not contenido:
+        return None
+    if len(contenido) > TAMANO_MAXIMO:
+        raise ValueError("La imagen supera el tamaño máximo de 5 MB")
+
+    # Prefijo de timestamp + id aleatorio para evitar colisiones de nombres
+    nombre = f"{int(time.time())}_{uuid.uuid4().hex[:8]}{extension}"
+    try:
+        os.makedirs(CARPETA_FOTOS, exist_ok=True)
+        with open(os.path.join(CARPETA_FOTOS, nombre), "wb") as destino:
+            destino.write(contenido)
+    except OSError as error:
+        logger.error("ERROR 500: %s", error)
+        raise ValueError("No se pudo guardar la imagen en el servidor") from error
+    return nombre
+
+
+def borrar_foto(nombre: str | None) -> None:
+    """Elimina el archivo físico si existe (nunca la imagen por defecto)."""
+    try:
+        if not nombre or nombre == FOTO_POR_DEFECTO:
+            return
+        ruta = os.path.join(CARPETA_FOTOS, os.path.basename(nombre))
+        if os.path.exists(ruta):
+            os.remove(ruta)
+    except OSError as error:
+        logger.error("ERROR 501: %s", error)

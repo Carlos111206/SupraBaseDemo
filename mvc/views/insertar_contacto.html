@@ -1,20 +1,16 @@
+$def with (mensaje)
 <h1>Insertar contacto</h1>
-
-<form name="contactos" method="post" enctype="multipart/form-data">
-    <label for="nombre">Nombre</label>
-    <input type="text" name="nombre" id="nombre" required><br>
-
-    <label for="email">Email</label>
-    <input type="email" name="email" id="email" required><br>
-
-    <label for="telefono">Telefono</label>
-    <input type="tel" name="telefono" id="telefono" required><br>
-
-    <label for="image">Foto del Perfil</label>
-    <input type="file" name="image" id="image" accept=".png,.jpg,.jpeg"><br>
-
-    <button type="submit" name="guardar" id="guardar">guardar</button>
-    <button type="reset" name="limpiar" id="limpiar">limpiar</button>
+$if mensaje:
+    <p>$mensaje</p>
+<form method="post" action="/insertar_contacto" enctype="multipart/form-data">
+<p><label for="nombre">Nombre</label><br>
+<input type="text" name="nombre" id="nombre" required></p>
+<p><label for="email">Email</label><br>
+<input type="email" name="email" id="email" required></p>
+<p><label for="telefono">Teléfono</label><br>
+<input type="tel" name="telefono" id="telefono" required></p>
+<p><label for="foto">Foto (.jpg, .jpeg, .png o .webp)</label><br>
+<input type="file" name="foto" id="foto" accept=".jpg,.jpeg,.png,.webp"></p>
+<button type="submit">Insertar</button>
+<a href="/lista_contactos">Cancelar</a>
 </form>
-
-<a href="/contactos">Regresar</a>

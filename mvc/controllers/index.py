@@ -1,8 +1,12 @@
-import web 
+import logging
 
-render = web.template.render('mvc/views', base ='template')
+from mvc.controllers.comun import render, requerir_login
+
+logger = logging.getLogger(__name__)
+
 
 class Index:
 
-    def GET (self):
-        return render.index()
+    def GET(self) -> str:
+        requerir_login()
+        return render.index()  # type: ignore

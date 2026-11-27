@@ -1,35 +1,42 @@
-import web
 import logging
 
-from mvc.controllers.index import Index
-from mvc.controllers.contactos import Contactos
-from mvc.controllers.insertar_contacto import InsertarContactos
-from mvc.controllers.ver_contacto import VerContacto
-from mvc.controllers.borrar_contacto import BorrarContacto
-from mvc.controllers.actualizar_contacto import ActualizarContacto
+import web
 
+from mvc.controllers.actualizar_contacto import ActualizarContacto
+from mvc.controllers.borrar_contacto import BorrarContacto
+from mvc.controllers.cerrar_sesion import CerrarSesion
+from mvc.controllers.index import Index
+from mvc.controllers.insertar_contacto import InsertarContacto
+from mvc.controllers.lista_contactos import ListaContactos
+from mvc.controllers.login import Login
+from mvc.controllers.ver_contacto import VerContacto
 
 logging.basicConfig(
     filename="app.log",
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
-    encoding="utf-8",  # Evita errores con tildes o caracteres especiales
+    encoding="utf-8",
 )
-
 
 urls = (
-    '/', 'Index',
-    '/contactos', 'Contactos',
-    '/insertar_contacto', 'InsertarContactos',
-    '/insertar-contactos', 'InsertarContactos',
-    '/ver_contacto', 'VerContacto',
-    '/borrar_contacto', 'BorrarContacto',
-    '/actualizar_contacto', 'ActualizarContacto',
+    "/", "Index",
+    "/login", "Login",
+    "/cerrar_sesion", "CerrarSesion",
+    "/lista_contactos", "ListaContactos",
+    "/ver_contacto", "VerContacto",
+    "/insertar_contacto", "InsertarContacto",
+    "/actualizar_contacto", "ActualizarContacto",
+    "/borrar_contacto", "BorrarContacto",
 )
-
 
 app = web.application(urls, globals())
 
-if __name__=="__main__":
+# La sesión se crea una sola vez (el modo debug recarga el módulo y la duplicaría)
+if web.config.get("_session") is None:
+    web.config._session = web.session.Session(  # type: ignore[attr-defined]
+        app, web.session.DiskStore("sessions"), initializer={"token": None}
+    )
+
+if __name__ == "__main__":
     app.run()

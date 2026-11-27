@@ -1,26 +1,12 @@
-$def with(contacto)
-
+$def with (contacto)
 $if contacto:
-    $ imagen = contacto.get('imagen') or 'default.png'
-
+    $ foto = contacto.get('foto') or 'default.png'
     <h1>Ver contacto</h1>
-
-    <img src="/static/images/$imagen" alt="Foto" width="150" height="150"><br>
-
-    <label for="nombre">Nombre</label>
-    <input type="text" name="nombre" id="nombre" value="$contacto['nombre']" readonly>
-    <br>
-
-    <label for="email">Email</label>
-    <input type="email" name="email" id="email" value="$contacto['email']" readonly>
-    <br>
-
-    <label for="telefono">Telefono</label>
-    <input type="tel" name="telefono" id="telefono" value="$contacto['telefono']" readonly>
-    <br>
-
-    <a href="/contactos">Regresar</a>
-
+    <img src="/static/fotos/$foto" alt="Foto" width="150" height="150">
+    <p>Nombre: $contacto['nombre']</p>
+    <p>Email: $contacto['email']</p>
+    <p>Teléfono: $contacto['telefono']</p>
+    <a href="/lista_contactos">Regresar a la lista de contactos</a>
 $else:
-    <h1>Contacto no encontrado</h1>
-    <a href="/contactos">Regresar</a>
+    <p>Contacto no encontrado</p>
+    <a href="/lista_contactos">Regresar a la lista de contactos</a>
